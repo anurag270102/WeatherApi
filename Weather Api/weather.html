@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Weather</title>
+    <link rel="stylesheet" href="weather.css">
+</head>
+<body>
+<div class="card">
+    <div class="search">
+        <input type="text" placeholder="enter city name" spellcheck="false">
+        <button><img src="C:\Users\ANURAG\Desktop\WEB DEVELOPMENT\Weather Api\th (1).jpeg" alt="search"></button>
+    </div>
+    <div>
+        <div class="error">Invalid City Name</div>
+    </div>
+    <div class="weather">
+        <img src="C:\Users\ANURAG\Desktop\WEB DEVELOPMENT\Weather Api\all.jpeg" alt="weather" class="weather-icon" style="display: none;">
+        <h1 class="temp" style="color:rgb(246, 141, 5);">22°c</h1>
+        <h2 class="city"  style="color:rgb(246, 141, 5);">londan</h2>
+        <div class="details">
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <p class="humidity" style="color:rgb(242, 5, 246);">50%</p>
+                        <p class="humidity1">humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                   
+                    <div>
+                        <p class="temp_min" style="color:rgb(242, 5, 246);">0°C</p>
+                        <p class="temp_min1">temp-min</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                   
+                    <div>
+                        <p class="wind" style="color:rgb(242, 5, 246);">0Km/H</p>
+                        <p class="wind1">Wind Speed</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div>
+                        <p class="temp_max" style="color:rgb(242, 5, 246);font-weight: bold;">0°C</p>
+                        <p class="temp_max1">temp-max</p>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div> 
+<script>
+    const apikey="enter your api key";
+    const apiurl="http://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+    const searchbox=document.querySelector(".search input");
+    const searchbtn=document.querySelector(".search button");
+    async function checkweather(city){
+        const response=await fetch(apiurl+city+`&appid=${apikey}`);
+        var data = await response.json();
+        const weathericon=document.querySelector(".weather-icon");
+        document.querySelector(".city").innerHTML=data.name;
+        document.querySelector(".temp").innerHTML=Math.round(data.main.temp)+"°c";
+        document.querySelector(".humidity").innerHTML=data.main.humidity+" %";
+        document.querySelector(".wind").innerHTML=data.wind.speed+" Km/H";
+        if(data.name=='undefined'){
+            document.querySelector(".error").style.display="block";
+        }
+        if(data.weather[0].main==='Clouds'){ 
+            document.getElementsByClassName('card')[0].setAttribute('style','background-image: url("C:/Users/ANURAG/Desktop/WEB DEVELOPMENT/Weather Api/tree-832079_1280.jpg");');
+        }
+        else if(data.weather[0].main==='Clear'){
+            
+            document.getElementsByClassName('card')[0].setAttribute('style','background-image: url("C:/Users/ANURAG/Desktop/WEB DEVELOPMENT/Weather Api/clear.jpeg");');
+        }
+        else if(data.weather[0].main==='Rain'){
+            
+            document.getElementsByClassName('card')[0].setAttribute('style','background-image: url("C:/Users/ANURAG/Desktop/WEB DEVELOPMENT/Weather Api/rain.jpeg");');
+        }
+        else if(data.weather[0].main==='Drizzle'){
+            
+            document.getElementsByClassName('card')[0].setAttribute('style','background-image: url("C:/Users/ANURAG/Desktop/WEB DEVELOPMENT/Weather Api/drizzle.jpeg");');
+        }
+        else if(data.weather[0].main==='Mist'){
+            document.getElementsByClassName('card')[0].setAttribute('style','background-image: url("C:/Users/ANURAG/Desktop/WEB DEVELOPMENT/Weather Api/mist.jpeg");');
+        }else{
+            document.getElementsByClassName('card')[0].setAttribute('style','background-color: #ebfffc');
+        }
+        document.querySelector(".weather").style.display="block";
+    }
+    searchbtn.addEventListener("click",()=>{
+        checkweather(searchbox.value);
+    });
+</script>   
+</body>
+</html>
